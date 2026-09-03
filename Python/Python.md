@@ -1686,8 +1686,6 @@ for i in range(1, 10):
 
 
 
-
-
 ## 4、循环中断
 
 - 思考：无论是 while 循环或是 for 循环，都是重复性的执行特定操作。
@@ -1963,68 +1961,1062 @@ add_data(5, 6)
 
 ### 3.2 位置参数
 
+- **定义**：调用函数时根据函数定义的<font color="red">**参数位置顺序**</font>来传递参数，把实参的值<font color="red">**依次传递**</font>给对应的形参
+
+```python
+def user_info(name, age, gender):
+    print(f'您的名字是{name}，年龄是{age}，性别是{gender}')
+
+user_info('TOM', 20, '男')
+```
+
+- 注意：
+  - 传递的参数和定义的参数的<font color="red">**顺序及个数必须一致**</font>
+  - 不能跳过某个位置的参数，去给后面的形参赋值
 
 
 
+### 3.3 关键字参数
+
+- **定义**：函数调用时通过「**键 = 值**」形式传递参数
+- **作用**：可以让函数更加清晰、容易使用，同时也清除了参数的顺序需求
+
+```python
+def user_info(name, age, gender):
+    print(f"您的名字是：{name}，年龄是：{age}，性别是：{gender}")
+
+# 关键字传参
+user_info(name="小明", age=20, gender="男")
+
+# 可以不按照固定顺序
+user_info(age=20, gender="男", name="小明")
+
+# 可以和位置参数混用，位置参数必须在前，且匹配参数顺序
+user_info("小明", age=20, gender="男")
+
+# 关键字参数在前，位置参数在后，报错
+user_info(name="小明", 20, gender="男")
+# 关键字参数重复，报错
+user_info(name="小明", age=20, gender="男", age=20)
+# 传入未定义的参数，报错
+user_info(name="小明", age=20, gender="男", school="sad")
+```
+
+- 注意：
+  - 函数调用时，如果有位置参数，<font color="red">**位置参数必须在关键字参数的前面，但关键字参数之间不存在先后顺序**</font>，如果没遵循这个原则，就会报错：SyntaxError: positional argument follows keyword argument
+  - 参数不可重复传，否则会报错
+  - 参数不可传入没有定义的，否则会报错
 
 
 
+### 3.4 限制传参方式
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- python中有6种数据类型
-
-| 类型               | 描述                   | 说明                                                         |
-| ------------------ | ---------------------- | ------------------------------------------------------------ |
-| 数字（Number）     | 整数（int）            | 整数（int），如：10、-10                                     |
-|                    | 浮点数（float）        | 浮点数（float），如：13.14、-13.14                           |
-|                    | 复数（complex）        | 复数（complex），如：4+3 j，以 j 结尾表示复数                |
-|                    | 布尔（bool）           | 布尔（bool）表达现实生活中的逻辑，即真和假，True表示真，False表示假。<font color="red">**True本质上是一个数字记作1，False记作0**</font> |
-| 字符串（String）   | 描述文本的一种数据类型 | 字符串（String）由任意数量的字符组成                         |
-| 列表（List）       | 有序的可变序列         | 使用最频繁的数据类型，可有序记录一堆数据                     |
-| 元组（Tuple）      | 有序的不可变序列       | 可有序记录一堆不可变的python数据集合                         |
-| 集合（Set）        | 无序不重复集合         | 可无序记录一堆不重复的python数据集合                         |
-| 字典（Dictionary） | 无序key-value集合      | 可有序记录一堆key-value型的python数据集合                    |
-
-- 字符串（String）：又称文本，由任意数量的字符如中文、英文、各类符号、数字等组成。所以叫做字符的串
-  - python中，<font color="red">**字符串需要用引号包起来，被引号包起来的，都是字符串**</font>
-  - 如："lzy"、"djb"
-- 最常用的字面量
-
-| 类型           | 程序中的写法 | 说明                                                         |
-| -------------- | ------------ | ------------------------------------------------------------ |
-| 整数           | 666、-88     | 和现实中的写法一致                                           |
-| 浮点数（小数） | 13.14、-5.21 | 和现实中的写法一致                                           |
-| 字符串（文本） | "lzy"        | <font color="red">**程序中需要加上双引号来表示字符串**</font> |
-
-- 用print打印上述字面量
+- 具体规则：<font color="red">**/ 前面只能用位置参数，* 后面只能用关键字参数**</font>
 
 ~~~python
-print(666)
-print(13.14)
-print("lzy")
+def user_info(name, /, age, *, gender):
+    print(f"您的名字是：{name}，年龄是：{age}，性别是：{gender}")
+
+# 前面只能用位置参数，* 后面只能用关键字参数
+user_info("小明", age=20, gender="男")
+
+# name用了关键字参数，报错：user_info() got some positional-only arguments passed as keyword arguments: 'name'
+user_info(name="小明", age=20, gender="男")
 ~~~
+
+- 注意：<font color="red">**/ 和 * 同时出现时，/ 必须在 * 的前面**</font>
+
+
+
+### 3.5 参数默认值
+
+- **定义**：缺省参数也叫默认参数，用于定义函数，为参数提供默认值，调用函数时可不传该默认参数的值
+- 注意：<font color="red">**所有位置参数必须出现在默认参数前，包括函数定义和调用**</font>
+- **作用**：当调用函数时没有传递参数，就会使用缺省参数对应的默认值。
+
+```python
+def user_info(name, age, gender='男'):
+    print(f'您的名字是{name}，年龄是{age}，性别是{gender}')
+
+# 不传默认参数，使用默认值
+user_info('TOM', 20)
+# 传值则覆盖默认值
+user_info('Rose', 18, '女')
+```
+
+- **注意**：函数调用时，<font color="red">**如果为缺省参数传值则修改默认参数值，否则使用这个默认值**</font>
+
+
+
+### 3.6 可变参数
+
+- **定义**：不定长参数也叫**可变参数**，用于 <font color="red">**不确定调用时会传递多少个参数（不传参也可以）** </font>的场景。
+
+- **作用**：当调用函数时不确定参数个数时，可以使用不定长参数。
+
+- **不定长参数的类型**：
+
+  - <font color="red">**位置传递（不定长参数之位置传递）**</font>
+
+    - <font color="red">**用 * 号定义**</font>
+
+    ```python
+    def user_info(*args):
+        print(args)
+        print(type(args))			# <class 'tuple'>
+    
+    # 输出: ('TOM',)
+    user_info('TOM')
+    # 输出: ('TOM', 18)
+    user_info('TOM', 18)
+    ```
+
+    - 注意：传进的所有参数都会被args变量收集，它会根据传进参数的位置<font color="red">合并为一个**元组 (tuple)**</font>，args是元组类型，这就是位置传递。
+
+  - <font color="red">**关键字传递（不定长参数之关键字传递）**</font>
+
+    - <font color="red">**用 \** 号定义**</font>
+
+    ```python
+    def user_info(**kwargs):
+        print(kwargs)
+        print(type(kwargs))			# <class 'dict'>
+    
+    # 输出: {'name': 'TOM', 'age': 18, 'id': 110}
+    user_info(name='TOM', age=18, id=110)
+    ```
+
+    - 注意：参数是 “键 = 值” 形式的情况下，所有的 “键 = 值” 都会被kwargs接受，同时会根据 “键 = 值” 自动<font color="red">组织成**字典（dict）** </font>类型的数据，kwargs是字典类型
+
+- 注意：
+  - 位置传递和关键字传递可以同时使用，但是位置传递的参数必须在关键字传入的参数前
+  - 可变参数也可以和其他类型的参数一起使用
+  - 总结：<font color="red">**位置参数 > 可变位置参数 > 默认参数 > 关键字参数 > 可变关键字参数**</font>
+
+~~~python
+def user_info(a, b, *args, c='lzy', **kwargs):
+    print(a)
+    print(b)
+    print(args)
+    print(c)
+    print(kwargs)
+
+user_info('张三', '男', '抽烟', '喝酒', age=18, sex='男')
+# 打印：
+"""
+张三
+男
+('抽烟', '喝酒')
+lzy
+{'age': 18, 'sex': '男'}
+"""
+~~~
+
+
+
+## 4、None
+
+- Python 中有一个特殊的字面量：None，其类型是：<class 'NoneType'>
+- 无返回值的函数，实际上就是返回了：None这个字面量
+- None表示：<font color="red">**空的、无实际意义**</font>的意思
+- 函数返回的None，就表示，这个函数没有返回什么有意义的内容。
+- 也就是返回了**空**的意思。
+
+```python
+def say_hello():
+    print("Hello...")
+
+# 使用变量接收say_hello函数的返回值
+result = say_hello()
+# 打印返回值
+print(result)          # 结果 None
+# 打印返回值类型
+print(type(result))    # 结果 <class 'NoneType'>
+```
+
+- None可以主动使用return返回，效果等同于不写return语句：
+
+```python
+def say_hello():
+    print("Hello...")
+    return None
+
+# 使用变量接收say_hello函数的返回值
+result = say_hello()
+# 打印返回值
+print(result)    # 结果 None
+```
+
+- 总结
+
+  - 函数没有return时，默认返回None
+  - 主动写return None和不写return效果完全一样
+  - None代表 “空、无意义”，类型是NoneType
+  - None转为布尔值是False
+  - None不能参与数学运算，也不能和字符串拼接
+
+- None 作为特殊字面量，用于表示**空、无意义**，主要应用场景：
+
+  - <font color="red">**函数无返回值**</font>
+
+    - 函数没有 return 语句时，默认返回 None；也可主动写 return None，效果一致。
+
+  - <font color="red">**if 判断**</font>
+
+    - 在 if 判断中，None 等同于 False
+    - 常用于函数返回 None，配合 if 做逻辑处理。
+
+    ```python
+    def check_age(age):
+        if age > 18:
+            return "SUCCESS"
+        return None
+    
+    result = check_age(5)
+    if not result:
+        print("未成年，不可进入")  # 会执行，因为 result 是 None
+    ```
+
+  - <font color="red">**声明无内容的变量**</font>
+
+    - 定义变量但暂时不需要具体值时，可用 None 占位：
+
+    ```python
+    # 暂不赋予变量具体值
+    name = None
+    ```
+
+
+
+## 5、返回值
+
+### 5.1 基本使用
+
+- 所谓 **“返回值”**，就是程序中函数完成事情后，最后给调用者的结果
+- 用return关键字返回数据，用变量在外部进行接收
+- 注意：<font color="red">**函数体在遇到return后就结束了，所以写在return后的代码就不会执行**</font>
+- 定义语法
+
+```python
+def 函数名(传入参数):
+    函数体
+    return 返回值
+
+变量 = 函数名(参数)
+```
+
+- 例子
+
+```python
+# 定义一个两数相加的函数
+def add_data(x, y):
+
+    return x + y
+
+# 调用计算1 + 2
+a = add_data(1, 2)
+# 调用计算5 + 6
+b = add_data(5, 6)
+print(f"{a}， {b}")
+
+
+"""
+3，11
+"""
+```
+
+
+
+### 5.2 函数多返回值
+
+- 问题
+  - 如果一个函数写两个return（如下所示），程序如何执行？
+  - 答：只执行了第一个return，原因是return会退出当前函数，导致return下方的代码不会执行。
+
+```python
+def return_num():
+    return 1
+    return 2
+
+result = return_num()
+print(result)  # 1
+```
+
+- <font color="red">**函数多返回值的写法**</font>
+  - **返回规则**：多个变量用逗号隔开
+  - **接收规则**：按照返回值的顺序，写对应顺序的多个变量接收即可，变量之间用逗号隔开。
+  - **数据类型**：支持不同类型的数据一起return
+
+```python
+# 定义一个多返回值的函数
+def test_return():
+    return "lzy", 1, False
+
+x, y, z = test_return()
+print(x)  # 结果 "lzy"
+print(y)  # 结果 1
+print(z)  # 结果 False
+```
+
+
+
+## 6、变量的作用域
+
+- 变量作用域指的是变量的作用范围（变量在哪里可用，在哪里不可用），主要分为两类：**局部变量**和**全局变量**。
+- 局部变量
+  - 所谓局部变量是定义在<font color="red">**函数体内部**</font>的变量，即只在函数体内部生效。
+  - num  是定义在 testA 函数内部的变量，在函数外部访问会立即报错。
+  - 局部变量的作用：在函数体内部<font color="red">**临时保存数据，函数执行结束后，局部变量会被销毁**</font>
+
+```python
+def testA():
+    num = 100  # 局部变量
+    print(num)
+
+testA()        # 输出 100
+print(num)     # 报错：name 'num' is not defined
+```
+
+- 所谓全局变量，<font color="red">**指的是在函数体内、外都能生效的变量**</font>
+  - 思考：如果有一个数据，在函数 A 和函数 B 中都要使用，该怎么办？
+  - 答：将这个数据存储在一个全局变量里面
+
+```python
+# 定义全局变量a
+num = 100
+
+def testA():
+    print(num)  # 访问全局变量num，并打印变量num存储的数据
+
+def testB():
+    print(num)  # 访问全局变量num，并打印变量num存储的数据
+
+testA()  # 100
+testB()  # 100
+```
+
+- global关键字
+  - <font color="red">**在函数内部修改全局变量的值，出了函数不会生效**</font>
+  - 如果想要在函数内部修改，需要加上global关键字
+
+```python
+num = 100
+
+def a():
+    num = 300
+    print(num)
+
+def b():
+    global num		# 声明num为全局变量，在函数内部修改会在全局生效
+    num = 200
+    print(num)
+
+a()
+print(num)
+b()
+print(num)
+
+
+"""
+输出结果
+300
+100
+200
+200
+"""
+```
+
+
+
+
+
+## 7、函数嵌套
+
+- 所谓函数嵌套调用指的是<font color="red">**一个函数里面又调用了另外一个函数**</font>
+
+```python
+def func_b():
+    print("---2---")
+
+def func_a():
+    print("---1---")
+    # 嵌套调用func_b
+    func_b()
+    print("---3---")
+
+# 调用函数func_a
+func_a()
+```
+
+- 如果函数a中，调用了另一个函数b，那么<font color="red">**先把函数b中的任务都执行完毕后才会回到上次函数a执行的位置**</font>
+- b完成后，继续执行函数a的剩余部分
+
+
+
+## 8、递归
+
+### 8.1 基本用法
+
+- 递归：即方法（函数）自己调用自己的一种特殊编程写法
+
+```python
+def func():
+    if ...:
+        func()
+    return ...
+```
+
+- **递归定义**：函数在内部直接或间接调用自身的编程技巧。
+- **关键结构**：
+  1. **递归条件**：控制函数何时调用自身（避免无限循环）。
+  2. **终止条件**：函数不再调用自身，直接返回结果，结束递归。
+- **本质**：将复杂问题拆解为规模更小、结构相同的子问题，直到子问题足够简单可以直接求解。
+
+```python
+def welcome(n):
+    print('你好')
+    if n > 1:
+        welcome(n-1)
+
+welcome(5)
+
+# 打印
+"""
+你好
+你好
+你好
+你好
+你好
+"""
+```
+
+
+
+### 8.2 递归应用
+
+- 使用递归求一个数的阶乘
+- 阶乘：所有小于等于该数的正整数的积
+- 比如：5! = 5 * 4 * 3 * 2 * 1
+- 特殊规定：0! = 1
+- 规律
+  - 8! = 8 * 7!
+  - 3! = 3 * 2!
+  - n! = n * (n-1)!
+
+~~~python
+def factorial(num):
+    if num == 0:
+        return 1
+    else:
+        return num * factorial(num-1)
+
+print(factorial(3))
+~~~
+
+
+
+## 9、说明文档
+
+- 函数是纯代码语言，想要理解其含义，就需要一行行去阅读理解代码，效率比较低。
+- 我们可以给函数添加**说明文档**，辅助理解函数的作用。
+
+```python
+def func(x, y):
+    """
+    函数说明
+    :param x: 形参x的说明
+    :param y: 形参y的说明
+    :return: 返回值的说明
+    """
+    # 函数体
+    return 返回值
+```
+
+- 通过多行注释（`"""..."""`）的形式，对函数进行说明解释
+- 内容应写在函数体之前
+- 示例代码
+
+```python
+def add(x, y):
+    """
+    计算两个数的和
+    :param x: 第一个加数
+    :param y: 第二个加数
+    :return: 两个数的和
+    """
+    return x + y
+
+# 查看函数说明文档
+help(add)
+```
+
+
+
+## 10、综合案例
+
+- 定义一个全局变量：money，用来记录银行卡余额（默认5000000）
+- 定义一个全局变量：name，用来记录客户姓名（启动程序时输入）
+- 定义如下的函数：
+  - 查询余额函数
+  - 存款函数
+  - 取款函数
+  - 主菜单函数
+- 要求：
+  - 程序启动后要求输入客户姓名
+  - 查询余额、存款、取款后都会返回主菜单
+  - 存款、取款后，都应显示一下当前余额
+  - 客户选择退出或输入错误，程序会退出，否则一直运行
+
+![函数综合案例](图片/函数综合案例.png)
+
+```python
+"""
+- 定义一个全局变量：`money`，用来记录银行卡余额（默认5000000）
+- 定义一个全局变量：`name`，用来记录客户姓名（启动程序时输入）
+- 定义如下的函数：
+  - 查询余额函数
+  - 存款函数
+  - 取款函数
+  - 主菜单函数
+- 要求：
+  - 程序启动后要求输入客户姓名
+  - 查询余额、存款、取款后都会返回主菜单
+  - 存款、取款后，都应显示一下当前余额
+  - 客户选择退出或输入错误，程序会退出，否则一直运行
+"""
+
+# 定义全局变量：银行卡余额
+money = 5000000
+# 定义全局变量：客户姓名
+name = ''
+
+
+def get_money():
+    """
+    查询余额函数
+    """
+    print("-------------查询余额--------------")
+    print(f"{name}，您好，您的余额剩余：{money}元")
+
+def add_money(account):
+    """
+    存款函数
+    :param account: 存款金额
+    """
+    global money
+    money += account
+    print("-------------存款--------------")
+    print(f"{name}，您好，您存款{account}元成功")
+    get_money()
+
+def sub_money(account):
+    """
+    取款函数
+    :param account: 取款金额
+    """
+    global money
+    money -= account
+    print("-------------取款--------------")
+    print(f"{name}，您好，您取款{account}元成功")
+    get_money()
+
+def main():
+    global name
+    name = input("请输入你的姓名：")
+    while True:
+        print("-------------主菜单--------------")
+        print(f"{name}，您好，欢迎来到ATM")
+        print("查询余额 [输入1]")
+        print("存款    [输入2]")
+        print("取款    [输入3]")
+        print("退出    [输入4]")
+        type = input("请输入您的选择:")
+        if type == "1":
+            get_money()
+        elif type == "2":
+            add_money(5000)
+        elif type == "3":
+            sub_money(5000)
+        else:
+            print("退出系统，再见！")
+            break
+
+main()
+
+"""
+结果
+请输入你的姓名：lzy
+-------------主菜单--------------
+lzy，您好，欢迎来到ATM
+查询余额 [输入1]
+存款    [输入2]
+取款    [输入3]
+退出    [输入4]
+请输入您的选择:1
+-------------查询余额--------------
+lzy，您好，您的余额剩余：5000000元
+-------------主菜单--------------
+lzy，您好，欢迎来到ATM
+查询余额 [输入1]
+存款    [输入2]
+取款    [输入3]
+退出    [输入4]
+请输入您的选择:2
+-------------存款--------------
+lzy，您好，您存款5000元成功
+-------------查询余额--------------
+lzy，您好，您的余额剩余：5005000元
+-------------主菜单--------------
+lzy，您好，欢迎来到ATM
+查询余额 [输入1]
+存款    [输入2]
+取款    [输入3]
+退出    [输入4]
+请输入您的选择:3
+-------------取款--------------
+lzy，您好，您取款5000元成功
+-------------查询余额--------------
+lzy，您好，您的余额剩余：5000000元
+-------------主菜单--------------
+lzy，您好，欢迎来到ATM
+查询余额 [输入1]
+存款    [输入2]
+取款    [输入3]
+退出    [输入4]
+请输入您的选择:4
+退出系统，再见！
+"""
+```
+
+
+
+# 五、数据容器
+
+## 1、容器入门
+
+- 什么是容器
+  - 一种<font color="red">**可以容纳多份数据**</font>的数据类型，容纳的<font color="red">**每一份数据称之为1个元素**</font>
+  - 每一个元素，可以是<font color="red">**任意类型**</font>的数据，如字符串、数字、布尔等
+- 数据容器根据特点的不同，如
+  - 是否支持重复元素
+  - 是否可以修改
+  - 是否有序等
+- 分为5类
+  - 列表（list）
+  - 元组（tuple）
+  - 字符串（str）
+  - 集合（set）
+  - 字典（dict）
+
+
+
+## 2、列表（list）
+
+### 2.1 定义
+
+- 问题引入
+  - 思考：有一个人的姓名 (TOM) 怎么在程序中存储？
+    - 答：**字符串变量**
+  - 思考：如果一个班级 100 位学生，每个人的姓名都要存储，应该如何书写程序？声明 100 个变量吗？
+    - 答：No，我们使用列表就可以了， 列表一次可以存储多个数据
+- 定义基本语法
+
+```python
+# 字面量
+[元素1, 元素2, 元素3, 元素4, ...]
+
+# 定义变量
+变量名称 = [元素1, 元素2, 元素3, 元素4, ...]
+
+# 定义空列表
+变量名称 = []
+变量名称 = list()
+```
+
+- **列表核心概念：**
+  - 列表内的<font color="red">**每一个数据，称之为元素**</font>
+  - 以 [] 作为标识
+  - 列表内每一个元素之间用 ,（逗号）隔开
+
+```python
+# 字符串列表
+name_list = ["lzy", "djb", "hz"]
+print(name_list)
+print(type(name_list))
+
+# 不同类型的列表
+my_list = ["lzy", 18, True]
+print(my_list)
+print(type(my_list))
+
+# 嵌套列表
+sub_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print(sub_list)
+print(type(sub_list))
+
+"""
+输出
+['lzy', 'djb', 'hz']
+<class 'list'>
+['lzy', 18, True]
+<class 'list'>
+[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+<class 'list'>
+"""
+```
+
+
+
+### 2.2 下标索引
+
+- 可以通过下标索引取出对应位置的数据：<font color="red">**列表[下标]**</font>
+
+- 要注意下标的范围，超出范围无法取出元素，并会报错：<font color="red">**IndexError: list index out of range**</font>
+
+- 正向下标索引
+
+  - 列表中的每一个元素，都有其位置下标索引，从前往后的方向，<font color="red">**从0开始，依次递增**</font>
+  - 只需要按照下标索引，即可取出对应位置的元素
+
+  ```python
+  # 字符串列表
+  name_list = ["lzy", "djb", "hz"]
+  # 通过下标索引取出对应的数据
+  print(name_list[0])       # 输出: lzy
+  print(name_list[1])       # 输出: djb
+  print(name_list[2])       # 输出: hz
+  ```
+
+![list下标索引](图片/list下标索引.png)
+
+- 反向下标索引
+
+  - 从后往前：<font color="red">**从-1开始，依次递减**</font>
+
+  ```python
+  # 字符串列表
+  name_list = ["lzy", "djb", "hz"]
+  # 通过下标索引取出对应的数据
+  print(name_list[-1])       # 输出: hz
+  print(name_list[-2])       # 输出: djb
+  print(name_list[-3])       # 输出: lzy
+  ```
+
+![list反向下标索引](图片/list反向下标索引.png)
+
+- 嵌套索引
+
+  - 每个子列表作为一个元素看待
+  - 然后每个子列表，又是一个列表，继续取对应的下标索引
+
+  ```python
+  # 嵌套列表
+  sub_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  # 通过下标索引取出对应的数据
+  print(sub_list[0])       # 输出: [1, 2, 3]
+  print(sub_list[0])       # 输出: [4, 5, 6]
+  print(sub_list[2])       # 输出: [7, 8, 9]
+  # 子列表的下标索引
+  print(sub_list[0][0])       # 输出: 1
+  print(sub_list[0][1])       # 输出: 2
+  print(sub_list[0][2])       # 输出: 3
+  ```
+
+![list嵌套下标索引](图片/list嵌套下标索引.png)
+
+### 2.3 增删改查方法
+
+- 增删改查
+
+| 方法 / 语法             | 功能描述                                 | 操作 |
+| ----------------------- | ---------------------------------------- | ---- |
+| 列表.append(元素)       | 向列表尾部追加一个元素                   | 增加 |
+| 列表.extend(容器)       | 将数据容器的内容依次取出，追加到列表尾部 | 增加 |
+| 列表.insert(下标, 元素) | 在指定下标处，插入指定的元素             | 增加 |
+| del 列表[下标]          | 删除列表指定下标元素                     | 删除 |
+| 列表.pop(下标)          | 删除列表指定下标元素                     | 删除 |
+| 列表.remove(元素)       | 从前向后，删除此元素第一个匹配项         | 删除 |
+| 列表.clear()            | 清空列表                                 | 删除 |
+| 列表[下标] = 值         | 通过下标修改指定位置的元素               | 修改 |
+| 列表[下标]              | 通过下标获取指定位置的元素               | 查询 |
+
+- 特点
+  - 可以容纳多个元素（上限为 2**63-1，即 9223372036854775807 个）
+  - 可以容纳不同类型的元素（混装）
+  - 数据是<font color="red">**有序存储**</font>的（有下标序号）
+  - <font color="red">**允许重复**</font>数据存在
+  - <font color="red">**可以修改**</font>（增加或删除元素等）
+- 例子
+
+```python
+# 定义一个列表
+name_list = ["Java", "Python", "C/C++"]
+
+# 1. 修改
+name_list[1] = 'Rust'
+print(f"修改列表后的值: {name_list}")
+
+# 2. 查询
+name = name_list[1]
+print(f"列表第二个元素的值: {name}")
+
+# 3. 新增
+# 3.1 在列表的尾部追加``单个``新元素
+name_list.append("golang")
+print(f"在列表的尾部追加后的值: {name_list}")
+
+# 3.2 在指定下标位置插入新元素
+name_list.insert(2, "Go")
+print(f"列表插入值后的值: {name_list}")
+
+# 3.3 在列表的尾部追加``一批``新元素
+my_list = ["1", "2", "3"]
+name_list.extend(my_list)
+print(f"在列表的尾部追加一批后的值: {name_list}")
+
+# 4. 删除
+# 4.1 方式1: del 列表[下标]
+name_list = ["Java", "Python", "C/C++"]
+del name_list[1]
+print(f"列表删除后的值: {name_list}")
+
+# 4.2 方式2: 列表.pop(下标)，同时可以取出元素让变量接收
+name_list = ["Java", "Python", "C/C++"]
+name = name_list.pop(1)
+print(f"列表删除后的值: {name_list}")
+print(f"删除后接收的值: {name}")
+
+# 4.3 方式3：从前向后，删除此元素第一个匹配项
+name_list = ["Java", "Python", "C/C++"]
+name_list.remove("Python")
+print(f"列表删除后的值: {name_list}")
+
+# 4.4 清空列表
+name_list = ["Java", "Python", "C/C++"]
+name = name_list.clear()
+print(f"清空列表后的值: {name_list}")
+
+"""
+Java在列表中的下标索引值是: 0
+修改列表后的值: ['Java', 'Rust', 'C/C++']
+列表第二个元素的值: Rust
+在列表的尾部追加后的值: ['Java', 'Rust', 'C/C++', 'golang']
+列表插入值后的值: ['Java', 'Rust', 'Go', 'C/C++', 'golang']
+在列表的尾部追加一批后的值: ['Java', 'Rust', 'Go', 'C/C++', 'golang', '1', '2', '3']
+列表删除后的值: ['Java', 'C/C++']
+列表删除后的值: ['Java', 'C/C++']
+删除后接收的值: Python
+列表删除后的值: ['Java', 'C/C++']
+清空列表后的值: []
+"""
+```
+
+
+
+### 2.4 常用方法
+
+| 方法 / 语法               | 功能描述                                                     |
+| ------------------------- | ------------------------------------------------------------ |
+| 列表.index(元素)          | 查找指定元素在列表的下标，找不到报错ValueError               |
+| 列表.count(元素)          | 统计此元素在列表中出现的次数                                 |
+| 列表.reverse()            | 反转列表（会改变原列表）                                     |
+| 列表.sort(reverse=布尔值) | 对列表排序（会改变原列表）<br />reverse=False（不需要反转）从小到大<br />reverse=True（需要反转）从大到小 |
+
+- 例子
+
+~~~python
+# 1.1 查找某元素在列表内的下标索引
+fruits = ['苹果', '香蕉', '橘子', '香蕉']
+index = fruits.index("香蕉")
+print(f"香蕉在列表中的下标索引值是: {index}")
+# 1.2 如果被查找的元素不存在，会报错
+# index = fruits.index("榴莲")
+# print(f"榴莲在列表中的下标索引值是: {index}")     # 没有值会报错：ValueError: 'php' is not in list
+
+# 2. 查找元素出现次数
+count = fruits.count('香蕉')
+print(f"香蕉在列表中出现的次数: {count}")
+
+# 3. 反转列表
+fruits.reverse()
+print(f"列表反转后的值: {fruits}")
+
+# 4. 排序
+sort_list = [2, 3, 67, 1, 0]
+sort_list.sort(reverse=False)
+print(f"列表排序后的值: {sort_list}")
+
+"""
+香蕉在列表中的下标索引值是: 1
+香蕉在列表中出现的次数: 2
+列表反转后的值: ['香蕉', '橘子', '香蕉', '苹果']
+列表排序后的值: [0, 1, 2, 3, 67]
+列表排序后的值: 5
+"""
+~~~
+
+
+
+### 2.5 常用内置函数
+
+| 方法 / 语法                      | 功能描述                                                     |
+| -------------------------------- | ------------------------------------------------------------ |
+| sorted(数据容器, reverse=布尔值) | 对容器排序（不会改变原容器）<br />reverse=True从大到小<br />reverse=False从小到大 |
+| len(数据容器)                    | 获取容器中的元素个数<br />返回值：元素个数                   |
+| max(数据容器)                    | 获取容器中或多个值的最大值<br />返回值：最大值               |
+| min(数据容器)                    | 获取容器中或多个值的最小值<br />返回值：最小值               |
+| sum(数据容器)                    | 对容器中的所有元素求和（只能是数字类型）<br />返回值：所有元素的和 |
+
+- 例子
+
+~~~python
+# ============================================
+# Python 容器常用函数 案例演示
+# 函数：sorted / len / max / min / sum
+# ============================================
+
+# 准备一个数字列表（就用最简单的例子）
+scores = [88, 92, 75, 66, 100]
+print("原始列表：", scores)
+print("-" * 40)
+
+# ---------- 1. sorted() 排序（不会改变原容器） ----------
+print("升序排列：", sorted(scores))                    # 默认从小到大
+print("降序排列：", sorted(scores, reverse=True))      # reverse=True 从大到小
+print("排序后原列表没变：", scores)                     # 还是 [88, 92, 75, 66, 100]
+
+print("-" * 40)
+
+# ---------- 2. len() 元素个数 ----------
+print("列表中有", len(scores), "个元素")                # 5
+
+# ---------- 3. max() / min() 最大值 / 最小值 ----------
+print("最大分：", max(scores))                          # 100
+print("最低分：", min(scores))                          # 66
+
+# ---------- 4. sum() 求和（只能是数字） ----------
+print("总分：", sum(scores))                            # 88+92+75+66+100 = 421
+
+
+"""
+原始列表： [88, 92, 75, 66, 100]
+----------------------------------------
+升序排列： [66, 75, 88, 92, 100]
+降序排列： [100, 92, 88, 75, 66]
+排序后原列表没变： [88, 92, 75, 66, 100]
+----------------------------------------
+列表中有 5 个元素
+最大分： 100
+最低分： 66
+总分： 421
+"""
+~~~
+
+
+
+### 2.6 列表遍历
+
+- 什么是遍历？
+  - 将容器内的元素依次**取出，并处理**，称之为遍历操作。
+- 如何遍历列表的元素？
+  - 可以使用 **while 或 for** 循环。
+- while循环的语法：
+
+```python
+while 下标索引变量 < 列表元素数量:
+    临时变量 = 列表[下标索引变量]
+    下标索引变量+1
+```
+
+- for 循环的语法：
+
+```python
+for 临时变量 in 列表容器:
+    # 对临时变量进行处理
+```
+
+- for 循环和 while 对比
+  - for 循环更简单，while 更灵活
+  - for 用于从容器内依次取出元素并处理，while 用以任何需要循环的场景
+
+```python
+def while_function(my_list):
+    """
+    while的循环
+    :param my_list:
+    :return:
+    """
+    index = 0
+    while index < len(my_list):
+        print(my_list[index])
+        index += 1
+
+
+def for_function(my_list):
+    """
+    for的循环
+    :param my_list:
+    :return:
+    """
+    for item in my_list:
+        print(item)
+
+
+# 定义列表
+num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+while_function(num_list)
+for_function(num_list)
+```
+
+
+
+### 2.7 案例
+
+```python
+"""
+有一个列表，内容是：[21, 25, 21, 23, 22, 20]，记录的是一批学生的年龄
+请通过列表的功能（方法），对其进行
+定义这个列表，并用变量接收它
+追加一个数字 31，到列表的尾部
+追加一个新列表[29, 33, 30]，到列表的尾部
+取出第一个元素（应是：21）
+取出最后一个元素（应是：30）
+查找元素 31，在列表中的下标位置
+"""
+
+# 1. 定义列表
+num_list = [21, 25, 21, 23, 22, 20]
+
+# 2. 追加31到尾部
+num_list.append(31)
+
+# 3. 追加新列表到尾部
+num_list.extend([29, 33, 30])
+
+# 4. 取出第一个元素
+first = num_list[0]
+print(f"第一个元素：{first}")  # 输出 21
+
+# 5. 取出最后一个元素
+last = num_list[-1]
+print(f"最后一个元素：{last}")  # 输出 30
+
+# 6. 查找31的下标
+index = num_list.index(31)
+print(f"元素31的下标位置：{index}")  # 输出 6
+```
+
+
+
+### 2.8 特点总结
+
+- 可以容纳多个数据
+- 可以容纳不同类型的数据（混装）
+- 数据是有序存储的（下标索引）
+- 允许重复数据存在
+- <font color="red">**可以修改**</font>（增加或删除元素等）
+- 支持 for 循环
+
+
+
 
