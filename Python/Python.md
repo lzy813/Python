@@ -2861,7 +2861,7 @@ print(f"列表排序后的值: {sort_list}")
 
 | 方法 / 语法                      | 功能描述                                                     |
 | -------------------------------- | ------------------------------------------------------------ |
-| sorted(数据容器, reverse=布尔值) | 对容器排序（不会改变原容器）<br />reverse=True从大到小<br />reverse=False从小到大 |
+| sorted(数据容器, reverse=布尔值) | 对容器排序（不会改变原容器），<font color="red">**返回的是一个新列表**</font><br />reverse=True从大到小<br />reverse=False从小到大 |
 | len(数据容器)                    | 获取容器中的元素个数<br />返回值：元素个数                   |
 | max(数据容器)                    | 获取容器中或多个值的最大值<br />返回值：最大值               |
 | min(数据容器)                    | 获取容器中或多个值的最小值<br />返回值：最小值               |
@@ -3019,4 +3019,901 @@ print(f"元素31的下标位置：{index}")  # 输出 6
 
 
 
+## 3、元组（tuple）
+
+### 3.1 定义
+
+- 思考：列表是<font color="red">**可以修改**</font>的。
+  - 如果想要传递的信息，<font color="red">**不被篡改**</font>，列表就不合适了。
+  - 元组同列表一样，都是可以封装多个、不同类型的元素在内。
+- 但最大的不同点在于：
+  - <font color="red">**元组一旦定义完成，就不可修改**</font>
+  - 所以，当我们需要在程序内封装数据，又不希望封装的数据被篡改，那么元组就非常合适了
+- 定义
+  - 定义元组使用<font color="red">**小括号**</font>，且使用<font color="red">**逗号**</font>隔开各个数据，数据可以是<font color="red">**不同的数据类型**</font>
+  - 注意事项：<font color="red">**元组只有一个数据的时候，这个数据后面要添加逗号**</font>
+  - <font color="red">**元组支持嵌套**</font>
+  - 取值跟列表一样，通过下标索引来取
+
+~~~python
+# 定义元组字面量
+(元素, 元素, ... , 元素)
+# 定义元组变量
+变量名称 = (元素, 元素, ... , 元素)
+# 定义空元组
+变量名称 = ()        # 方式1
+变量名称 = tuple()   # 方式2
+# 根据下标索引取值
+元组[索引下标]
+~~~
+
+- 例子
+
+~~~python
+# 定义一个3个元素的元组
+t1 = ("lzy", 18, True)
+# 定义一个1个元素的元组
+t2 = ("djb",)
+# 定义一个嵌套元组
+t3 = ((1, 2, 3), (4, 5, 6))
+print(t1)
+print(type(t1))
+print(t2)
+print(type(t2))
+print(t3)
+print(type(t3))
+# 根据索引下标取值
+print(t1[1])
+print(t3[1][1])
+
+"""
+输出结果
+('lzy', 18, True)
+<class 'tuple'>
+('djb',)
+<class 'tuple'>
+((1, 2, 3), (4, 5, 6))
+<class 'tuple'>
+18
+5
+"""
+~~~
+
+
+
+### 3.2 常用方法
+
+| 方法      | 作用                                               |
+| --------- | -------------------------------------------------- |
+| index()   | 查找某个数据，如果数据存在返回对应的下标，否则报错 |
+| count()   | 统计某个数据在当前元组出现的次数                   |
+| len(元组) | 统计元组内的元素个数                               |
+
+- 例子
+
+~~~python
+# 定义一个元组
+t1 = ("lzy", "hz", "djb", "lzy", "djb")
+
+# index查找方法
+index = t1.index("hz")
+print(f"hz的下标是：{index}")
+
+# count统计方法
+num = t1.count("lzy")
+print(f"lzy的出现的个数是：{num}")
+
+# len统计个数方法
+num = len(t1)
+print(f"t1元组中的元素个数是：{num}")
+
+
+"""
+输出结果
+hz的下标是：1
+lzy的出现的个数是：2
+t1元组中的元素个数是：5
+"""
+~~~
+
+
+
+### 3.3 常用内置函数
+
+| 方法 / 语法                      | 功能描述                                                     |
+| -------------------------------- | ------------------------------------------------------------ |
+| sorted(数据容器, reverse=布尔值) | 对容器排序（不会改变原容器），<font color="red">**返回的是一个新列表**</font><br />reverse=True从大到小<br />reverse=False从小到大 |
+| len(数据容器)                    | 获取容器中的元素个数<br />返回值：元素个数                   |
+| max(数据容器)                    | 获取容器中或多个值的最大值<br />返回值：最大值               |
+| min(数据容器)                    | 获取容器中或多个值的最小值<br />返回值：最小值               |
+| sum(数据容器)                    | 对容器中的所有元素求和（只能是数字类型）<br />返回值：所有元素的和 |
+
+- 例子
+
+~~~python
+# 定义元组
+nums = (22, 15, 8, 37, 10)
+
+# sorted：排序，返回新列表，元组本身不变
+res1 = sorted(nums, reverse=False)   # 从小到大
+res2 = sorted(nums, reverse=True)    # 从大到小
+print("sorted升序：", res1)
+print("sorted降序：", res2)
+print("原元组不变：", nums)
+
+# len：获取元素个数
+print("len元素数量：", len(nums))
+
+# max：最大值
+print("max最大值：", max(nums))
+
+# min：最小值
+print("min最小值：", min(nums))
+
+# sum：元素求和（只支持数字元组）
+print("sum总和：", sum(nums))
+
+
+
+"""
+sorted升序： [8, 10, 15, 22, 37]
+sorted降序： [37, 22, 15, 10, 8]
+原元组不变： (22, 15, 8, 37, 10)
+len元素数量： 5
+max最大值： 37
+min最小值： 8
+sum总和： 92
+"""
+~~~
+
+
+
+### 3.4 遍历
+
+- while循环的语法：
+
+~~~python
+while 下标索引变量 < 元组元素数量:
+    临时变量 = 元组[下标索引变量]
+    下标索引变量+1
+~~~
+
+- for 循环的语法：
+
+```python
+for 临时变量 in 元组容器:
+    # 对临时变量进行处理
+```
+
+- 例子
+
+~~~python
+def while_function(my_tuple):
+    """
+    while的循环
+    :param my_tuple:
+    :return:
+    """
+    index = 0
+    while index < len(my_tuple):
+        print(my_tuple[index])
+        index += 1
+
+
+def for_function(my_tuple):
+    """
+    for的循环
+    :param my_tuple:
+    :return:
+    """
+    for item in my_tuple:
+        print(item)
+
+
+# 定义元组
+num_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+while_function(num_tuple)
+for_function(num_tuple)
+~~~
+
+
+
+### 3.5 不可修改
+
+- <font color="red">**元组定义之后就不可修改**</font>
+- 如果尝试修改，就会报错：<font color="red">**TypeError: 'tuple' object does not support item assignment**</font>
+- 注意：如果存储的元素里面有可变列表，那么修改里面可变元素是可以的
+
+~~~python
+t1 = (1, 2, 3, 4, 5, [6, 7, 8])
+# 修改可变元素是可以的
+t1[5][1] = 2
+print(t1)
+
+# 修改其他元素是可以的
+t1[0] = 100
+print(t1)
+
+"""
+(1, 2, 3, 4, 5, [6, 2, 8])
+报错：
+Traceback (most recent call last):
+  File "D:\pythonProject\Test\test1.py", line 3, in <module>
+    t1[0] = 100
+    ~~^^^
+TypeError: 'tuple' object does not support item assignment
+"""
+~~~
+
+
+
+### 3.7 解包列表和元组传参
+
+- 解包列表
+
+  - 作用：<font color="red">**用来把列表 / 元组里面的每一个元素拆开，当成独立位置参数传给函数**</font>
+  - 用法：在实参列表前面加上一个 * 
+
+  - 基础示例
+
+  ~~~python
+  def add(a, b, c):
+      return a + b + c
+  
+  my_list = [10, 20, 30]
+  my_tuple = (1, 2, 3)
+  
+  # 不解包：直接传列表，会报错，函数只接收3个数字，收到1个列表
+  # print(add(my_list))
+  
+  # * 解包，把列表拆开成 a=10, b=20, c=30
+  print(add(*my_list))   # 60
+  print(add(*my_tuple))  # 6
+  ~~~
+
+- 和可变位置参数 *args 配合：args 接收一堆位置参数，打包成元组
+
+  ~~~python
+  def total(*args):
+      print(args)   # args 是元组
+      print(type(args))
+      return sum(args)
+  
+  nums = (2,4,6,8)
+  print(total(*nums)) # 等价 total(2,4,6,8) → 20
+  
+  """
+  (2, 4, 6, 8)
+  <class 'tuple'>
+  20
+  """
+  ~~~
+
+- 列表 / 元组解包赋值（变量解包，不是函数传参）
+
+  ~~~python
+  # 元组解包赋值
+  t = (100, 200)
+  x, y = t
+  print(x, y) # 100 200
+  
+  # 列表解包赋值
+  lst = [11,22]
+  m, n = lst
+  print(m, n) #11 22
+  
+  # *接收剩余多个元素
+  a, *rest, b = [1,2,3,4,5]
+  print(a)     #1
+  print(rest)  #[2,3,4]
+  print(b)     #5
+  ~~~
+
+- 对比：字典解包是 **
+
+  - `*`：解包 list /tuple → **位置参数**
+  - `**`：解包 dict → **关键字参数**
+
+  ~~~python
+  def show(name, age):
+      print(name, age)
+  
+  d = {"name":"张三", "age":20}
+  show(**d) # show(name="张三", age=20)
+  ~~~
+
+  
+
+### 3.6 特点总结
+
+- 可以容纳多个数据
+
+- 可以容纳不同类型的数据（混装）
+
+- 数据是有序存储的（下标索引）
+
+- 允许重复数据存在
+
+- <font color="red">**不可以修改**</font>（增加或删除元素等）
+
+- 支持 for 循环
+
+
+
+## 4、字符串（str）
+
+### 4.1 定义
+
+- 定义
+
+  - 尽管字符串看起来并不像：列表、元组那样，一看就是存放了许多数据的容器。
+  - 但不可否认的是，字符串同样也是数据容器的一员。
+
+  - <font color="red">**字符串是字符的容器，一个字符串可以存放任意数量的字符**</font>
+
+![字符串](/图片/字符串.png)
+
+- 和其它容器如：列表、元组一样，字符串也可以通过下标进行访问
+  - 从前向后，下标从 0 开始
+  - 从后向前，下标从 - 1 开始
+
+~~~python
+# 通过下标获取特定位置字符
+name = "itheima"
+print(name[0])   # 结果i
+print(name[-1])  # 结果a
+~~~
+
+- 字符串是一个：<font color="red">**无法修改**</font>的数据容器。
+  - 修改指定下标的字符（如：字符串[0] = "a"）
+  - 移除特定下标的字符（如：del 字符串[0]、字符串.remove()、字符串.pop()等）
+  - 追加字符等（如：字符串.append()）
+  - 均无法完成。如果必须要做，<font color="red">**只能通过创建新字符串来间接实现**</font>
+  - 修改报错：TypeError: 'str' object does not support item assignment
+
+~~~python
+# 定义一个字符串
+str1 = "lzy love djb"
+# 输出索引下标为1的
+print(str1[1])
+# 尝试修改
+str1[1] = "x"
+
+
+"""
+z
+Traceback (most recent call last):
+  File "D:\pythonProject\Test\test1.py", line 6, in <module>
+    str1[1] = "x"
+    ~~~~^^^
+TypeError: 'str' object does not support item assignment
+"""
+~~~
+
+
+
+### 4.2 常用方法
+
+- 字符串的常用操作
+
+- | 方法 / 语法                      | 功能描述                                                     |
+  | -------------------------------- | ------------------------------------------------------------ |
+  | 字符串.index(字符串)             | 查找特定字符串的第一次出现的下标索引值                       |
+  | 字符串.replace(字符串1, 字符串2) | 将字符串内的全部**字符串1**，替换为**字符串 2**<br />注意：<font color="red">**不是修改字符串本身，而是得到了一个新字符串**</font> |
+  | 字符串.split(分隔符字符串)       | 按照指定的**分隔符字符串**，将字符串划分为多个字符串，并存入**列表对象**中<br />**注意**：<font color="red">字符串本身不变，而是得到了一个**列表对象**</font> |
+  | 字符串.strip()                   | 字符串的规整操作（去前后空格）                               |
+  | 字符串.strip(字符串)             | 字符串的规整操作（去前后指定字符串）<br />注意：<font color="red">传入的若是"12"，其实就是"1"和"2"，都会移除，是按照单个字符</font> |
+  | 字符串.count(字符串)             | 统计字符串内某字符串的出现次数                               |
+  | len(字符串)                      | 统计字符串的字符个数                                         |
+
+- 例子
+
+~~~python
+# 定义一个字符串
+my_str = "lzy love djb"
+
+# 通过索引下标取值
+value1 = my_str[2]
+value2 = my_str[-10]
+print(f"从字符串{my_str}取下标为2的元素，值是：{value1}, 取下标为-10的元素，值是：{value2}")
+
+# index方法，返回索引下标
+index = my_str.index("love")
+print(f"{my_str}中love的索引下标是：{index}")
+
+# replace替换方法
+new_str = my_str.replace("love", "like")
+print(f"{my_str}替换后的新字符串是：{new_str}")
+
+# spilt分割方法
+my_list = my_str.split(" ")
+print(f"{my_str}按空格分割后的新数据为：{my_list}")
+
+# strip去除前后多余的字符串方法
+# 不传值，就是去除前后的空格
+my_str = "   lzy love djb  "
+new_str = my_str.strip()
+print(f"{my_str}去除前后空格后值为：{new_str}")
+
+# 传值，就是去除前后的空格,传入的若是"12"，其实就是"1"和"2"，都会移除，是按照单个字符
+my_str = "12lzy love djb21"
+new_str = my_str.strip("12")
+print(f"{my_str}去除前后12后值为：{new_str}")
+
+# count统计字符串内某字符串的出现次数
+count = my_str.count("love")
+print(f"{my_str}中love出现的次数为：{count}")
+
+# len统计字符串长度
+count = len(my_str)
+print(f"{my_str}字符串长度为：{count}")
+
+
+"""
+从字符串lzy love djb取下标为2的元素，值是：y, 取下标为-10的元素，值是：y
+lzy love djb中love的索引下标是：4
+lzy love djb替换后的新字符串是：lzy like djb
+lzy love djb按空格分割后的新数据为：['lzy', 'love', 'djb']
+   lzy love djb  去除前后空格后值为：lzy love djb
+12lzy love djb21去除前后12后值为：lzy love djb
+12lzy love djb21中love出现的次数为：1
+12lzy love djb21字符串长度为：16
+"""
+~~~
+
+
+
+### 4.3 特点总结
+
+- <font color="red">**只可以存储字符串**</font>
+- 长度任意（取决于内存大小）
+- 支持下标索引
+- 允许重复字符串存在
+- <font color="red">**不可以修改**</font>（增加或删除元素等）
+- 而且无法和前两个容器一样嵌套
+
+
+
+## 5、序列切片
+
+### 5.1 序列
+
+- 序列是指：<font color="red">**内容连续、有序、可使用下标索引的一类数据容器**</font>
+- font color="red">**列表、元组、字符串，均可以视为序列**</font>
+
+![序列](图片/序列.png)
+
+
+
+
+
+### 5.2 切片
+
+- 序列支持切片，即：列表、元组、字符串，均支持进行切片操作
+
+- 切片：从一个序列中，取出一个子序列
+
+- **语法：序列 [起始下标：结束下标：步长]**
+
+- <font color="red">**表示从序列中，从指定位置开始，依次取出元素，到指定位置结束，得到一个新序列**</font>
+
+  - 起始下标表示从何处开始，可以留空，留空视作从头开始
+
+  - 结束下标<font color="red">**（不含）**</font>表示何处结束，可以留空，留空视作截取到结尾
+
+  - 步长表示，依次取元素的间隔，可以省略，省略则表示为1
+    - 步长 1 表示，一个个取元素
+    - 步长 2 表示，每次跳过 1 个元素取
+    - 步长 N 表示，每次跳过 N-1 个元素取
+    - 步长为负数表示，反向取（注意，<font color="red">**起始下标和结束下标也要反向标记**</font>）
+
+- 注意：<font color="red">**切片操作不会影响序列本身，而是会得到一个新的序列（列表、元组、字符串）**</font>
+
+~~~python
+# 对list进行切片，从1开始，4结束，步长1
+my_list = [0, 1, 2, 3, 4, 5, 6]
+new_list = my_list[1:5]
+print(f"new_list: {new_list}")
+
+# 对tuple进行切片，从头开始，到最后结束，步长1
+my_tuple = [0, 1, 2, 3, 4, 5, 6]
+new_tuple = my_tuple[::1]
+print(f"new_tuple: {new_tuple}")
+
+# 对str进行切片，从头开始，到最后结束，步长2
+my_str = "0123456"
+new_str = my_tuple[::2]
+print(f"new_str: {new_str}")
+
+# 对str进行切片，从头开始，到最后结束，步长-1,等于取反
+new_str = my_tuple[::-1]
+print(f"new_str: {new_str}")
+
+# 对列表进行切片，从3开始，到1结束，步长-1
+new_list = my_list[3:1:-1]
+print(f"new_list: {new_list}")
+
+# 对元组进行切片，从头开始，到尾结束，步长-2
+new_tuple = my_tuple[::-2]
+print(f"new_tuple: {new_tuple}")
+
+
+"""
+new_list: [1, 2, 3, 4]
+new_tuple: [0, 1, 2, 3, 4, 5, 6]
+new_str: [0, 2, 4, 6]
+new_str: [6, 5, 4, 3, 2, 1, 0]
+new_list: [3, 2]
+new_tuple: [6, 4, 2, 0]
+"""
+~~~
+
+- 例子
+
+~~~python
+my_str = "万过薪月，员序程马黑来，nohtyP"
+
+# 倒序字符串，切片取出
+result1 = my_str[::-1][9:14]
+print(f"方式1结果：{result1}")
+
+# 切片取出，然后倒序
+result2 = my_str[5:10][::-1]
+print(f"方式2结果：{result2}")
+
+
+
+"""
+方式1结果：马程序员，
+方式2结果：黑马程序员
+"""
+~~~
+
+
+
+### 5.3 序列的其他操作
+
+#### 5.3.1 相加
+
+- 新序列 = 序列 1 + 序列 2
+
+- 注意：两个同类型的序列才能相加（字符串 + 字符串、列表 + 列表、元组 + 元组）
+
+- **列表**
+
+```python
+list1 = [10, 20, 30, 40]
+list2 = [50, 60, 70, 80]
+list3 = list1 + list2
+print(list3) # [10, 20, 30, 40, 50, 60, 70, 80]
+```
+
+- **元组**
+
+```python
+tuple1 = (10, 20, 30, 40)
+tuple2 = (50, 60, 70, 80)
+tuple3 = tuple1 + tuple2
+print(tuple3) # (10, 20, 30, 40, 50, 60, 70, 80)
+```
+
+- **字符串**
+
+```python
+str1 = 'hello'
+str2 = 'lzy'
+str3 = str1 + str2
+print(str3) # hellolzy
+```
+
+- `+` 序列相加：**不会修改原有序列，返回拼接后的新序列；必须相同类型才能相加**，列表不能直接 + 元组。 示例代码：
+
+```python
+# 不同类型相加会报错
+[1,2] + (3,4) # TypeError
+```
+
+
+
+#### 5.3.2 相乘
+
+- 新序列 = 序列 * n
+
+- 注意：n 必须是整数，不能是浮点数
+
+- **列表**
+
+```python
+list1 = [10, 20, 30, 40]
+result = list1 * 3
+print(result)  # [10, 20, 30, 40, 10, 20, 30, 40, 10, 20, 30, 40]
+```
+
+- **元组**
+
+```python
+tuple1 = (10, 20, 30, 40)
+result = tuple1 * 3
+print(result)  # (10, 20, 30, 40, 10, 20, 30, 40, 10, 20, 30, 40)
+```
+
+- **字符串**
+
+```python
+str1 = 'hello'
+result = str1 * 6
+print(result)  # hellohellohellohellohellohello
+```
+
+- 知识点： `*` 序列相乘：把序列重复 n 次，返回**新序列**，原序列不变；n 只能是整数，浮点数会报错。
+
+```python
+[1,2] * 2.5  # TypeError
+```
+
+
+
+## 6、集合
+
+### 6.1 定义
+
+- <font color="red">**不支持元素的重复（自带去重功能），并且内容无序**</font>
+- 通过frozenset定义不可变集合
+
+~~~python
+# 定义集合字面量
+{元素, 元素, ......, 元素}
+
+# 定义集合变量
+变量名称 = {元素, 元素, ......, 元素}
+
+# 定义空集合
+变量名称 = set()
+
+# 定义不可变集合
+变量名称 = frozenset(集合)
+
+# 定义不可变空集合
+变量名称 = frozenset()
+~~~
+
+- 和列表、元组、字符串等定义基本相同
+  - 列表使用：[]
+  - 元组使用：()
+  - 字符串使用：""
+  - 集合使用：{}
+
+~~~~python
+my_set = {"lzy", "lyx", "lzy", "lyx", "djb", "djb"}
+my_set_empty = set()
+print(f"my_set的内容是：{my_set}, 类型是：{type(my_set)}")
+print(f"my_set_empty的内容是：{my_set_empty}, 类型是：{type(my_set_empty)}")
+
+s1 = frozenset(my_set)
+print(f"s1<UNK>{s1}, <UNK>{type(s1)}")
+
+"""
+my_set的内容是：{'djb', 'lzy', 'lyx'}, 类型是：<class 'set'>
+my_set_empty的内容是：set(), 类型是：<class 'set'>
+s1<UNK>frozenset({'djb', 'lzy', 'lyx'}), <UNK><class 'frozenset'>
+"""
+~~~~
+
+
+
+### 6.2 常用方法
+
+- 首先，因为集合是无序的，所以集合<font color="red">**不支持：下标索引访问**</font>
+- 但是集合和列表一样，是<font color="red">**允许修改**</font>的，所以我们来看看集合的修改方法
+
+|              方法              | 描述                                                         |
+| :----------------------------: | :----------------------------------------------------------- |
+|         集合.add(元素)         | 功能：将指定元素，添加到集合内<br />结果：集合本身被修改，添加了新元素 |
+|       集合.remove(元素)        | 功能：将指定元素，从集合内移除<br />结果：集合本身被修改，移除了元素 |
+|           集合.pop()           | 功能：从集合中随机取出一个元素<br />结果：会得到一个元素的结果，同时集合本身被修改，元素被移除 |
+|          集合.clear()          | 功能：清空集合<br />结果：集合本身被清空                     |
+|    集合1.difference(集合2)     | 功能：取出集合 1 和集合 2 的差集（即集合 1 有而集合 2 没有的元素）<br />结果：<font color="red">**得到一个新集合，集合 1 和集合 2 本身保持不变**</font> |
+| 集合1.difference_update(集合2) | 功能：对比集合 1 和集合 2，<font color="red">**在集合 1 内删除和集合 2 相同的元素**</font><br />结果：<font color="red">**集合 1 被修改，集合 2 保持不变**</font> |
+|       集合1.union(集合2)       | 功能：将集合 1 和集合 2 组合成新集合（自动去重）<br />结果：<font color="red">**得到新集合，集合 1 和集合 2 本身保持不变**</font> |
+|           len(集合)            | 统计集合中的元素个数                                         |
+|       for item in 集合:        | 遍历集合                                                     |
+
+- 例子
+
+~~~python
+# 添加元素
+my_set = {"Hello", "World"}
+my_set.add("itheima")
+print(my_set)  # 结果 {'Hello', 'itheima', 'World'}
+
+# 移除元素
+my_set = {"Hello", "World", "itheima"}
+my_set.remove("Hello")
+print(my_set)  # 结果 {'world', 'itheima'}
+
+# pop随机移除元素
+my_set = {"Hello", "World", "itheima"}
+element = my_set.pop()
+print(my_set)      # 结果 {'world', 'itheima'}
+print(element)      # 结果 'Hello'
+
+# 清空元素
+my_set = {"Hello", "World", "itheima"}
+my_set.clear()
+print(my_set)       # 结果：set() （空集合）
+
+# 取差集
+set1 = {1, 2, 3}
+set2 = {1, 5, 6}
+set3 = set1.difference(set2)
+print(set3)      # 结果：{2, 3}（得到的新集合）
+print(set1)      # 结果：{1, 2, 3}（原集合不变）
+print(set2)      # 结果：{1, 5, 6}（原集合不变）
+
+# 集合合并
+set1 = {1, 2, 3}
+set2 = {1, 5, 6}
+set3 = set1.union(set2)
+print(set3)      # 结果：{1, 2, 3, 5, 6}（新集合）
+print(set1)      # 结果：{1, 2, 3}（set1不变）
+print(set2)      # 结果：{1, 5, 6}（set2不变）
+
+# 消除差集
+set1 = {1, 2, 3}
+set2 = {1, 5, 6}
+set1.difference_update(set2)
+print(set1)      # 结果：{2, 3}
+print(set2)      # 结果：{1, 5, 6}
+
+# 统计集合个数
+my_set = {1, 2, 3}
+print(len(my_set))   # 结果：3
+
+# 遍历集合
+my_set = {1, 2, 3}
+for item in my_set:
+    print(item)
+
+~~~
+
+
+
+### 6.3 特点总结
+
+- 可以容纳多个数据
+- 可以容纳不同类型的数据（混装）
+- 数据是<font color="red">**无序存储的（不支持下标索引）**</font>
+- <font color="red">**不允许重复**</font>数据存在
+- <font color="red">**可以修改**</font>（增加或删除元素等）
+- 支持 for 循环
+
+
+
+### 5.7 字典
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 六、面向对象
+
+## 1、面向对象
+
+### 1.1 初识对象
+
+- 在程序中是可以做到和生活中那样，设计表格、生产表格、填写表格的组织形式的。、
+
+  - 在程序中<font color="red">**设计表格**</font>，我们称之为：<font color="red">**设计类（class）**</font>
+
+  ~~~python
+  class Student:
+      name = None  # 记录学生姓名
+  ~~~
+
+  - 在程序中<font color="red">**打印生产表格**</font>，我们称之为：<font color="red">**创建对象**</font>
+
+  ~~~python
+  # 基于类创建对象
+  stu_1 = Student()
+  stu_2 = Student()
+  ~~~
+
+  - 在程序中<font color="red">**填写表格**</font>，我们称之为：<font color="red">**对象属性赋值**</font>
+
+  ~~~python
+  stu_1.name = "周杰伦"  # 为学生1对象赋予名称属性值
+  stu_2.name = "林军杰"  # 为学生2对象赋予名称属性值
+  ~~~
+
+- 例子
+
+~~~python
+# 1. 设计一个类（类比生活中：设计一张登记表）
+class Student:
+    name = None          # 记录学生姓名
+    gender = None        # 记录学生性别
+    nationality = None   # 记录学生国籍
+    native_place = None  # 记录学生籍贯
+    age = None           # 记录学生年龄
+
+# 2. 创建一个对象（类比生活中：打印一张登记表）
+stu_1 = Student()
+
+# 3. 对象属性进行赋值（类比生活中：填写表单）
+stu_1.name = "lzy"
+stu_1.gender = "男"
+stu_1.nationality = "中国"
+stu_1.native_place = "湖北省"
+stu_1.age = 28
+
+# 4. 获取对象中的记录信息
+print(stu_1.name)
+print(stu_1.gender)
+print(stu_1.nationality)
+print(stu_1.native_place)
+print(stu_1.age)
+
+
+"""
+lzy
+男
+中国
+湖北省
+28
+"""
+~~~
 
