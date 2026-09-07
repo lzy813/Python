@@ -3701,7 +3701,111 @@ s1<UNK>frozenset({'djb', 'lzy', 'lyx'}), <UNK><class 'frozenset'>
 
 
 
-### 6.2 常用方法
+### 6.2 增删改查
+
+- 增
+
+  - <font color="red">**集合.add (元素)**</font> 
+  - 作用：向集合中添加元素 
+  - 返回值：无
+
+  ```python
+  s1 = {10, 20, 30, 40, 50}
+  s1.add(60)
+  print(s1) # {50, 20, 40, 10, 60, 30}
+  ```
+
+  - <font color="red">**集合.update (元素)**</font> 
+  - 作用：向集合中批量添加元素（接收可迭代对象，例如：列表、元组、集合等）
+  -  返回值：无
+
+  ```python
+  s1 = {10, 20, 30, 40, 50}
+  s1.update([60, 70])
+  s1.update((80, 90))
+  print(s1) # {70, 10, 80, 20, 90, 30, 40, 50, 60}
+  ```
+
+  - add 和 update 区别小结
+
+    - add()：添加<font color="red">**单个元素**</font>，直接把这个元素放进集合
+
+    - update()：传入可迭代对象 (列表 / 元组 / 集合)**</font> ，会把里面每一个元素拆开逐个加入集合
+
+- 删
+
+  - <font color="red">**集合.remove (元素)**</font>
+  - 作用：从集合中移除指定元素（若元素不存在，会报错） 
+  - 返回值：无
+
+  ~~~python
+  s1 = {10, 20, 30, 40, 50}
+  s1.remove(20)
+  print(s1) # {50, 40, 10, 30}
+  ~~~
+
+  - <font color="red">**集合.discard (元素)**</font>
+  - 作用：从集合中移除指定元素（若元素不存在，不报错） 
+  - 返回值：无
+
+  ~~~python
+  s1 = {10, 20, 30, 40, 50}
+  s1.discard(20)
+  print(s1) # {50, 40, 10, 30}
+  ~~~
+
+  - <font color="red">**集合.pop ()**</font>
+  - 作用：从集合中移除一个任意元素 
+  - 返回值：移除的那个元素
+
+  ~~~python
+  s1 = {10, 20, 30, 40, 50}
+  result = s1.pop()
+  print(s1) # {20, 40, 10, 30}
+  print(result) # 50
+  ~~~
+
+  - <font color="red">**集合.clear ()**</font>
+  - 作用：清空集合 返回值：无
+  - 那它的作用是清空集合
+
+  ~~~python
+  s1 = {10, 20, 30, 40, 50}
+  result = s1.clear()
+  print(s1) # {}
+  ~~~
+
+- 改
+
+  - 集合**没有下标**，也**不支持** replace 方法，所以集合**没有**专门用于 “改” 的方法。
+  - 可以用：<font color="red">**remove + add 的组合**</font>，来达到 “修改” 的效果。
+
+  ~~~python
+  s1 = {10, 20, 30, 40, 50}
+  s1.remove(20)
+  s1.add(66)
+  ~~~
+
+  - 原理：先把旧元素删掉，再添加新元素，模拟修改
+
+- 查
+
+  - 由于集合<font color="red">**没有下标**</font>，也**不支持**切片操作，所以集合**不具备**按位置访问的能力。
+
+  - 通过**成员运算符**可以判断：某个元素是否在集合中。
+
+    ```python
+    s1 = {10, 20, 30, 40, 50}
+    result = 20 in s1
+    print(result)  # True
+    
+    result = 60 in s1
+    print(result)  # False
+    ```
+
+
+
+### 6.3 常用方法
 
 - 首先，因为集合是无序的，所以集合<font color="red">**不支持：下标索引访问**</font>
 - 但是集合和列表一样，是<font color="red">**允许修改**</font>的，所以我们来看看集合的修改方法
@@ -3778,7 +3882,53 @@ for item in my_set:
 
 
 
-### 6.3 特点总结
+### 6.4 数学计算
+
+```python
+s1 = {10, 20, 30, 40, 50, 60}
+s2 = {40, 50, 60, 70, 80, 90}
+```
+
+**并集 `|`**
+
+```python
+result = s1 | s2
+print(result) # {70, 40, 10, 80, 50, 20, 90, 60, 30}
+```
+
+**交集 `&`**
+
+```python
+result = s1 & s2
+print(result) # {40, 50, 60}
+```
+
+**差集 `-`**
+
+```python
+result = s2 - s1
+print(result) # {70, 80, 90}
+```
+
+**对称差集 `^`**
+
+```python
+result = s2 ^ s1
+print(result) # {10, 20, 30, 70, 80, 90}
+```
+
+简单记忆
+
+| 运算符 | 名称     | 含义                               |                            |
+| ------ | -------- | ---------------------------------- | -------------------------- |
+| `      | `        | 并集                               | 两个集合所有元素，去重合并 |
+| `&`    | 交集     | 两个集合共同拥有的元素             |                            |
+| `-`    | 差集     | A‑B：A 里面有、B 里面没有的元素    |                            |
+| `^`    | 对称差集 | 两边各自独有的元素（去掉共同部分） |                            |
+
+
+
+### 6.5 特点总结
 
 - 可以容纳多个数据
 - 可以容纳不同类型的数据（混装）
@@ -3789,71 +3939,272 @@ for item in my_set:
 
 
 
-### 5.7 字典
+## 7、字典
+
+### 7.1 定义
+
+- 字典的定义，同样使用`{}`，不过存储的元素是一个个的：<font color="red">**键值对**</font>，如下语法：
+- 注意：<font color="red">key值不可重复</font>，重复添加等同于覆盖原有数据
+
+~~~python
+# 定义字典字面量
+{key: value, key: value, ......, key: value}
+
+# 定义字典变量
+my_dict = {key: value, key: value, ......, key: value}
+
+# 定义空字典
+my_dict = {}          # 空字典定义方式1
+my_dict = dict()      # 空字典定义方式2
+~~~
+
+- 字典同集合一样，不可以使用下标索引。但是<font color="red">字典可以通过 **Key 值** 来取得对应的 Value</font>
+
+~~~python
+value = 字典["key"]
+~~~
+
+- 字典可以嵌套，value值为另一个字典
+
+~~~python
+{key: value, key: {key: value}}
+~~~
+
+- 嵌套字典取值
+
+~~~python
+value = 字典["key"]["key"]
+~~~
+
+- 例子
+
+~~~python
+# 定义一个字典
+my_dict = {"id": "001", "name": "lzy", "age": 18}
+print(my_dict["name"])
+print(type(my_dict))
+
+# 定义一个空字典
+my_dict1 = {}
+my_dict2 = dict()
+print(type(my_dict1))
+print(type(my_dict2))
+
+# 字典嵌套
+other_dict = {"id": "002", "name": "djb", "age": 18}
+my_dict = {"id": "001", "name": "lzy", "age": 18, "lover": other_dict}
+print(my_dict)
+print(my_dict["lover"]["name"])
+
+"""
+lzy
+<class 'dict'>
+<class 'dict'>
+<class 'dict'>
+{'id': '001', 'name': 'lzy', 'age': 18, 'lover': {'id': '002', 'name': 'djb', 'age': 18}}
+djb
+"""
+~~~
 
 
 
+### 7.2 常用操作
+
+| 操作              | 说明                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| 字典[Key]         | 获取指定 Key 对应的 Value 值                                 |
+| 字典[Key] = Value | 添加或更新键值对<br /><font color="red">**字典 Key 不可以重复，所以对已存在的 Key 执行上述操作，就是更新 Value 值**</font> |
+| 字典.pop(Key)     | 获得指定 Key 的 Value，同时字典被修改，指定 Key 的数据被删除 |
+| 字典.clear()      | 字典被修改，元素被清空                                       |
+| 字典.keys()       | 获取字典的全部 Key，可用于 for 循环遍历字典                  |
+| len(字典)         | 计算字典内的元素数量                                         |
+
+- 例子
+
+```python
+# 定义一个字典
+a_dict = {"周杰伦": 90, "林俊杰": 91, "汪峰": 81, "王菲": 80}
+
+# 获取指定 Key 对应的 Value 值
+print(f"周杰伦的评分：{a_dict["周杰伦"]}")
+
+# 添加元素
+a_dict["陶喆"] = 89
+print(f"添加元素后：{a_dict}")
+
+# 修改元素
+a_dict["陶喆"] = 88
+print(f"修改元素后：{a_dict}")
+
+# 获得指定 Key 的 Value，同时字典被修改，指定 Key 的数据被删除
+num = a_dict.pop("陶喆")
+print(f"删除元素后：{a_dict}")
+print(f"删除元素：{num}")
+
+# 获取所有key方法1
+all_key = a_dict.keys()
+for key in all_key:
+    print(f"<UNK>{key}")
+
+# 获取所有key方法2
+for key in a_dict:
+    print(f"<UNK>{key}")
+
+# 获取长度
+print(len(a_dict))
+
+
+"""
+周杰伦的评分：90
+添加元素后：{'周杰伦': 90, '林俊杰': 91, '汪峰': 81, '王菲': 80, '陶喆': 89}
+修改元素后：{'周杰伦': 90, '林俊杰': 91, '汪峰': 81, '王菲': 80, '陶喆': 88}
+删除元素后：{'周杰伦': 90, '林俊杰': 91, '汪峰': 81, '王菲': 80}
+删除元素：88
+<UNK>周杰伦
+<UNK>林俊杰
+<UNK>汪峰
+<UNK>王菲
+<UNK>周杰伦
+<UNK>林俊杰
+<UNK>汪峰
+<UNK>王菲
+4
+"""
+```
 
 
 
+### 7.3 特点总结
+
+- 可以容纳**多个数据**
+- 可以容纳不同**类型的数据**
+- 每一份数据是 **KeyValue 键值对**
+- 可以通过 Key 获取到 Value，**Key 不可重复**（重复会覆盖）
+- <font color="red">**不支持下标索引**</font>
+- <font color="red">**可以修改**</font>（增加或删除更新元素等）
+- <font color="red">**支持 for 循环，不支持 while 循环**</font>
 
 
 
+## 8、容器特点对比
+
+|              | 列表                             | 元组                               | 字符串             | 集合                   | 字典                                           |
+| ------------ | -------------------------------- | ---------------------------------- | ------------------ | ---------------------- | ---------------------------------------------- |
+| **元素数量** | 支持多个                         | 支持多个                           | 支持多个           | 支持多个               | 支持多个                                       |
+| **元素类型** | 任意                             | 任意                               | 仅字符             | 任意                   | Key: ValueKey：除字典外任意类型Value：任意类型 |
+| **下标索引** | 支持                             | 支持                               | 支持               | 不支持                 | 不支持                                         |
+| **重复元素** | 支持                             | 支持                               | 支持               | 不支持                 | 不支持                                         |
+| **可修改性** | 支持                             | 不支持                             | 不支持             | 支持                   | 支持                                           |
+| **数据有序** | 是                               | 是                                 | 是                 | 否                     | 否                                             |
+| **使用场景** | 可修改、可重复的一批数据记录场景 | 不可修改、可重复的一批数据记录场景 | 一串字符的记录场景 | 不可重复的数据记录场景 | 以 Key 检索 Value 的数据记录场景               |
 
 
 
+## 9、容器的通用操作
+
+- 在遍历上：
+  - 五类数据都支持for循环
+  - 列表、元组、字符串支持while循环；集合、字典不支持（没有索引下标）
+
+| 功能                         | 描述                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| 通用 `for` 循环              | 遍历容器（字典是遍历 key）                                   |
+| max()                        | 容器内最大元素                                               |
+| min()                        | 容器内最小元素                                               |
+| len()                        | 容器元素个数                                                 |
+| list()                       | 转换为列表                                                   |
+| tuple()                      | 转换为元组                                                   |
+| str()                        | 转换为字符串                                                 |
+| set()                        | 转换为集合                                                   |
+| sorted(序列, [reverse=True]) | 排序，reverse=True 表示降序；返回一个<font color="red">**排好序的新列表**</font>（注意：sorted 不修改原序列，列表的 sort() 方法才会直接修改原列表） |
+
+- 例子
+
+~~~python
+# 定义容器数据
+my_list = [1, 2, 3, 4, 5]
+my_tuple = (1, 2, 3, 4, 5)
+my_str = "abcdefg"
+my_set = {1, 2, 3, 4, 5}
+my_dict = {"key1": 5, "key2": 4, "key3": 3, "key4": 2, "key5": 1}
+
+# len 元素个数
+print(f"列表 元素个数有: {len(my_list)}")
+print(f"元组 元素个数有: {len(my_tuple)}")
+print(f"字符串 元素个数有: {len(my_str)}")
+print(f"集合 元素个数有: {len(my_set)}")
+print(f"字典 元素个数有: {len(my_dict)}")
+
+print("===================================")
+
+# max 最大元素
+print(f"列表 最大元素: {max(my_list)}")
+print(f"元组 最大元素: {max(my_tuple)}")
+print(f"字符串 最大元素: {max(my_str)}")
+print(f"集合 最大元素: {max(my_set)}")
+print(f"字典 最大元素: {max(my_dict)}")
+
+print("===================================")
+
+# min 最小元素
+print(f"列表 最小元素: {min(my_list)}")
+print(f"元组 最小元素: {min(my_tuple)}")
+print(f"字符串 最小元素: {min(my_str)}")
+print(f"集合 最小元素: {min(my_set)}")
+print(f"字典 最小元素: {min(my_dict)}")
+
+print("===================================")
+
+# 类型转换: 容器转列表
+print(f"列表 容器转列表: {list(my_list)}")
+print(f"元组 容器转列表: {list(my_tuple)}")
+print(f"字符串 容器转列表: {list(my_str)}")
+print(f"集合 容器转列表: {list(my_set)}")
+print(f"字典 容器转列表: {list(my_dict)}")
+
+print("===================================")
+
+# 类型转换: 容器转元组
+print(f"列表 容器转元组: {tuple(my_list)}")
+print(f"元组 容器转元组: {tuple(my_tuple)}")
+print(f"字符串 容器转元组: {tuple(my_str)}")
+print(f"集合 容器转元组: {tuple(my_set)}")
+print(f"字典 容器转元组: {tuple(my_dict)}")
+
+print("===================================")
+
+# 类型转换: 容器转字符串
+print(f"列表 容器转字符串: {str(my_list)}")
+print(f"元组 容器转字符串: {str(my_tuple)}")
+print(f"字符串 容器转字符串: {str(my_str)}")
+print(f"集合 容器转字符串: {str(my_set)}")
+print(f"字典 容器转字符串: {str(my_dict)}")
+
+print("===================================")
+
+# 类型转换: 容器转集合
+print(f"列表 容器转集合: {set(my_list)}")
+print(f"元组 容器转集合: {set(my_tuple)}")
+print(f"字符串 容器转集合: {set(my_str)}")
+print(f"集合 容器转集合: {set(my_set)}")
+print(f"字典 容器转集合: {set(my_dict)}")
 
 
+print("===================================")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 类型转换: 容器排序
+print(f"列表 容器排序: {sorted(my_list, reverse=True)}")
+print(f"元组 容器排序: {sorted(my_tuple, reverse=True)}")
+print(f"字符串 容器排序: {sorted(my_str, reverse=True)}")
+print(f"集合 容器排序: {sorted(my_set, reverse=True)}")
+print(f"字典 容器排序: {sorted(my_dict, reverse=True)}")
+~~~
 
 
 
 # 六、面向对象
 
-## 1、面向对象
-
-### 1.1 初识对象
+## 1、初识对象
 
 - 在程序中是可以做到和生活中那样，设计表格、生产表格、填写表格的组织形式的。、
 
@@ -3916,4 +4267,208 @@ lzy
 28
 """
 ~~~
+
+
+
+## 2、类的定义和使用
+
+- 类的使用语法：
+  - class 是关键字，表示要定义类了
+  - <font color="red">**类的属性**</font>：即定义在类中的变量（成员变量）
+  - <font color="red">**类的行为**</font>：即定义在类中的函数（成员方法）
+
+~~~python
+class 类名称:
+    # 类的属性
+    # 类的行为
+~~~
+
+- 实例化类对象的语法：
+
+~~~python
+对象 = 类名称()
+~~~
+
+- 例如：
+
+~~~python
+class Student:
+    name = None    # 学生的姓名
+    age = None     # 学生的年龄
+
+    def say_hi(self):
+        print(f"Hi大家好，我是{self.name}")
+
+stu = Student()
+stu.name = "周杰伦"
+stu.say_hi()  # 输出：Hi大家好，我是周杰伦
+~~~
+
+- 类中：
+  - 不仅可以定义属性用来记录数据
+  - 也可以定义函数，用来记录行为
+  - 类中定义的属性（变量），我们称之为：**成员变量**
+  - 类中定义的行为（函数），我们称之为：**成员方法**
+
+- 在类中定义成员方法和定义函数基本一致，但仍有细微区别：
+  - 可以看到，在方法定义的参数列表中，有一个：self 关键字
+  - self 关键字是成员方法定义的时候，<font color="red">**必须填写**</font>的。
+    - 它用来表示类对象自身的意思
+    - 当我们使用类对象调用方法时，self 会自动被 Python 传入
+    - 在方法内部，想要访问类的成员变量，<font color="red">**必须使用 self**</font>
+    - self 出现在形参列表中，但是不会占用参数位置，无需理会
+
+~~~python
+def 方法名(self, 形参1, ......, 形参N):
+    方法体
+~~~
+
+- 通过`__dict__`可以查看类身上的所有东西
+
+~~~python
+# 定义一个学生类
+class Student():
+    # 静态成员变量
+    school = '广水一中'
+    leader = 'lzy'
+
+    # 构造方法
+    def __init__(self, name, age, tel):
+        self.name = name
+        self.age = age
+        self.tel = tel
+
+print(Student.__dict__)
+
+"""
+{'__module__': '__main__', '__firstlineno__': 2, 'school': '广水一中', 'leader': 'lzy', '__init__': <function Student.__init__ at 0x0000017FBFFBF240>, '__static_attributes__': ('age', 'name', 'tel'), '__dict__': <attribute '__dict__' of 'Student' objects>, '__weakref__': <attribute '__weakref__' of 'Student' objects>, '__doc__': None}
+"""
+~~~
+
+
+
+## 3、类和对象
+
+- **现实世界的事物由什么组成？**
+
+  - 属性
+
+  - 行为
+
+    > 类也可以包含属性和行为，所以使用类描述现实世界事物是非常合适的
+
+- **类和对象的关系是什么？**
+
+  - 类是程序中的 **“设计图纸”**
+  - 对象是基于图纸生产的 **具体实体**
+
+- **什么是面向对象编程？**
+
+  > 面向对象编程就是，使用对象进行编程。
+  >
+  > 即：设计类，创建类的对象，并使用对象来完成具体的工作
+
+~~~python
+# 设计一个闹钟类
+class Clock:
+    id = None       # 序列化（序列号）
+    price = None    # 价格
+
+    def ring(self):
+        import winsound
+        print(f"闹钟ID：{self.id}，价格：{self.price}")
+        winsound.Beep(2000, 3000)
+
+# 构建2个闹钟对象并让其工作
+# 闹钟1
+clock1 = Clock()
+clock1.id = "003032"
+clock1.price = 19.99
+clock1.ring()
+
+# 闹钟2
+clock2 = Clock()
+clock2.id = "005051"
+clock2.price = 29.99
+clock2.ring()
+~~~
+
+
+
+## 4、构造方法
+
+- 在上述代码中，为对象的属性赋值需要依次进行，略显繁琐，需要引入一种更加高效的方法，一行代码完成所有数据赋值
+- python类使用：<font color="red">**\_\_init\_\_()，称之为构造方法**</font>
+  - 在创建类对象（构造类）的时候，<font color="red">**会自动执行**</font>
+  - 在创建类对象（构造类）的时候，<font color="red">**将传入参数自动传递给\_\_init\_\_()方法使用**</font>
+- 注意
+  - 构造方法名称：`__init__`，<font color="red">**init 前后都有 2 个下划线**</font>，千万不要忘记。
+  - 构造方法也是成员方法，<font color="red">**参数列表中必须提供 self**</font>。
+  - 在构造方法内定义成员变量，需要使用 `self` 关键字原因：<font color="red">**变量定义在构造方法内部，要成为对象的成员变量，需要用 `self` 绑定到对象本身**</font>。
+
+- 例子
+
+~~~python
+# 定义一个学生类
+class Student():
+    # 构造方法
+    def __init__(self,name,age,tel):
+        self.name = name
+        self.age = age
+        self.tel = tel
+
+# 构造学生对象
+stu = Student("lzy", 18, "18271660939")
+print(stu.name)
+print(stu.age)
+print(stu.tel)
+~~~
+
+
+
+## 5、类属性(静态成员变量)
+
+- 通过 `__init__`赋值的变量为类的成员变量，只能通过类的实例对象访问
+- 而保持在类上的公共属性，是可以通过类访问的
+- school、leader为静态成员变量，类和类的实例对象都可以访问到
+- name、age、tel为实例成员变量，只能通过类的实例对象访问
+
+~~~python
+# 定义一个学生类
+class Student():
+    # 静态成员变量
+    school = '广水一中'
+    leader = 'lzy'
+
+    # 构造方法
+    def __init__(self, name, age, tel):
+        self.name = name
+        self.age = age
+        self.tel = tel
+
+s1 = Student('<UNK>', 21, '<UNK>')
+s2 = Student('<UNK>', 21, '<UNK>')
+print(s1.school)
+print(s2.school)
+print(Student.school)
+
+"""
+打印：
+广水一中
+广水一中
+广水一中
+"""
+~~~
+
+
+
+## 6、类方法
+
+- 使用 @classmethod 装饰过的方法，就叫：类方法，类方法保存在类身上的
+
+- 类方法收到的参数：当前类本身（cls）、自定义的参数
+
+- 因为收到了cls参数，所以类方法中是可以访问类属性的
+
+- 类方法通常用于实现：与类相关的逻辑，例如：操作类级别的信息、一些工厂方法
 

@@ -110,6 +110,7 @@ def hello_world():
 
 - 把它保存为 hello.py 或其他类似名称。请不要使用 flask.py 作为应用名称，这会与 Flask 本身发生冲突。
 - 可以使用 flask 命令或者 python -m flask 来运行这个应用。你需要使用 --app 选项告诉 Flask 哪里可以找到应用
+- flask --app 文件名 run 
 
 ~~~bash
 (FlaskDemo) PS D:\pythonProject\FlaskDemo> flask --app test run 
@@ -134,6 +135,84 @@ $ flask run --host=0.0.0.0
 ```
 
 - 这行代码告诉您的操作系统监听所有公开的 IP
+
+
+
+## 3、调试模式
+
+- flask run 命令不只可以启动开发服务器。如果您打开调试模式，那么服 务器会在修改应用代码之后自动重启，并且当请求过程中发生错误时还会在浏 览器中提供一个交互调试器。
+
+- 调试器允许执行来自浏览器的任意 Python 代码。虽然它由一个 pin 保护， 但仍然存在巨大安全风险。不要在生产环境中运行开发服务器或调试器。
+
+- 如果要打开调试模式，请使用 `--debug` 选项。
+
+```bash
+$ flask --app hello run --debug
+ * Serving Flask app 'hello'
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: nnn-nnn-nnn
+```
+
+
+
+## 4、HTML 转义
+
+- 当返回 HTML （ Flask 中的默认响应类型）时，为了防止注入攻击，所有用户 提供的值在输出渲染前必须被转义。使用 Jinja （这个稍后会介绍）渲染的 HTML 模板会自动执行此操作。
+
+- 在下面展示的 escape() 可以手动转义。因为保持简洁的 原因，在多数示例中它被省略了，但您应该始终留心处理不可信的数据。
+
+```python
+from markupsafe import escape
+
+@app.route("/<name>")
+def hello(name):
+    return f"Hello, {escape(name)}!"
+```
+
+- 如果一个用户想要提交其名称为 `<script>alert("bad")</script>` ，那么 宁可转义为文本，也好过在浏览器中执行脚本。
+
+- 路由中的 `<name>` 从 URL 中捕获值并将其传递给视图函数。这些变量规则 见下文。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
