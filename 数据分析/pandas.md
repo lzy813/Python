@@ -1477,5 +1477,203 @@ print(df.to_string())
 
 #### 2.1.3 导出CSV文件
 
+- to_csv() 是将 DataFrame 写入 CSV 文件的方法，支持自定义分隔符、列名、是否包含索引等设置
 
+~~~python
+import pandas as pd
+
+# 假设 df 是一个已有的 DataFrame
+df.to_csv('output.csv', index=False, header=True, columns=['A', 'B'])
+~~~
+
+- 参数
+
+| **参数**        | **说明**                                                     | **默认值** |
+| --------------- | ------------------------------------------------------------ | ---------- |
+| path_or_buffer  | CSV 文件的路径或文件对象（支持文件路径、文件对象）           | 必需参数   |
+| sep             | 定义字段分隔符，默认是逗号（,），可以改为其他字符，如制表符（\t） | ','        |
+| index           | 是否写入行索引，默认 True 表示写入索引                       | True       |
+| columns         | 指定写入的列，可以是列的名称列表                             | None       |
+| header          | 是否写入列名，默认 True 表示写入列名，设置为 False 表示不写列名 | True       |
+| mode            | 写入文件的模式，默认是 w（写模式），可以设置为 a（追加模式） | 'w'        |
+| encoding        | 文件的编码格式，如 utf-8，latin1 等                          | None       |
+| line_terminator | 定义行结束符，默认为 \n                                      | None       |
+| quoting         | 设置如何对文件中的数据进行引号处理（0-3，具体引用方式可查文档）<br /><font color="red">**csv.QUOTE_MINIMAL**</font>：0，**默认值**。仅对包含特殊字符（如分隔符、换行符或引号本身）的字段添加引号<br /><font color="red">**csv.QUOTE_ALL**</font>：1，对**所有**字段（无论类型）都加上引号<br /><font color="red">**csv.QUOTE_NONNUMERIC**</font>：2，对所有**非数值型**（如字符串、对象等）的字段加上引号<br /><font color="red">**csv.QUOTE_NONE**</font>：3，**不加任何引号**。配合 escapechar 参数使用可处理特殊字符转义 | None       |
+| quotechar       | 设置用于引用的字符，默认为双引号 "                           | '"'        |
+| date_format     | 自定义日期格式，如果列包含日期数据，则可以使用此参数指定日期格式 | None       |
+| doublequote     | 如果为 True，则在写入时会将包含引号的文本使用双引号括起来    | True       |
+
+~~~python
+import csv
+
+import pandas as pd
+
+# 准备测试数据
+df = pd.DataFrame({
+    "姓名": ["张三", "李四", "王五"],
+    "年龄": [25, 30, 28],
+    "城市": ["北京", "上海", "广州"]
+})
+
+# 写入 CSV（默认有索引）
+df.to_csv("output.csv")
+
+# 不写入索引
+df.to_csv("output.csv", index=False)
+
+# 指定分隔符
+df.to_csv("output.csv", sep="\t")
+
+# 不写入表头
+df.to_csv("output.csv", header=False)
+
+# 指定编码
+df.to_csv("output.csv", encoding="utf-8-sig")  # 带 BOM，适合 Excel 打开
+
+# 强制所有字段加双引号
+df.to_csv("all_quoted.csv", index=False, quoting=csv.QUOTE_ALL)
+~~~
+
+
+
+#### 2.1.4 数据处理
+
+- head(n) 方法用于读取前面的 n 行，如果不填参数 n ，默认返回 5 行
+
+~~~python
+import pandas as pd
+
+df = pd.read_csv('nba.csv')
+
+print(df.head(5))
+
+
+"""
+            Name            Team  Number  ... Weight            College     Salary
+0  Avery Bradley  Boston Celtics     0.0  ...  180.0              Texas  7730337.0
+1    Jae Crowder  Boston Celtics    99.0  ...  235.0          Marquette  6796117.0
+2   John Holland  Boston Celtics    30.0  ...  205.0  Boston University        NaN
+3    R.J. Hunter  Boston Celtics    28.0  ...  185.0      Georgia State  1148640.0
+4  Jonas Jerebko  Boston Celtics     8.0  ...  231.0                NaN  5000000.0
+"""
+~~~
+
+- tail(n) 方法用于读取尾部的 n 行，如果不填参数 n ，默认返回 5 行，空行各个字段的值返回 **NaN**
+
+~~~python
+import pandas as pd
+
+df = pd.read_csv('nba.csv')
+
+print(df.tail())
+
+"""
+             Name       Team  Number Position  ...  Height Weight  College     Salary
+453  Shelvin Mack  Utah Jazz     8.0       PG  ...     6-3  203.0   Butler  2433333.0
+454     Raul Neto  Utah Jazz    25.0       PG  ...     6-1  179.0      NaN   900000.0
+455  Tibor Pleiss  Utah Jazz    21.0        C  ...     7-3  256.0      NaN  2900000.0
+456   Jeff Withey  Utah Jazz    24.0        C  ...     7-0  231.0   Kansas   947276.0
+457           NaN        NaN     NaN      NaN  ...     NaN    NaN      NaN        NaN
+"""
+~~~
+
+- info() 方法返回表格的一些基本信息
+
+~~~python
+import pandas as pd
+
+df = pd.read_csv('nba.csv')
+
+print(df.info())
+
+
+"""
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 458 entries, 0 to 457          # 行数，458 行，第一行编号为 0
+Data columns (total 9 columns):            # 列数，9列
+ #   Column    Non-Null Count  Dtype       # 各列的数据类型
+---  ------    --------------  -----  
+ 0   Name      457 non-null    object 
+ 1   Team      457 non-null    object 
+ 2   Number    457 non-null    float64
+ 3   Position  457 non-null    object 
+ 4   Age       457 non-null    float64
+ 5   Height    457 non-null    object 
+ 6   Weight    457 non-null    float64
+ 7   College   373 non-null    object         # non-null，意思为非空的数据    
+ 8   Salary    446 non-null    float64
+dtypes: float64(4), object(5)                 # 类型
+memory usage: 32.3 KB
+None
+"""
+~~~
+
+- non-null 为非空数据，可以看到上面的信息中，总共 458 行，College 字段的空值最多
+
+
+
+
+
+### 2.2 Excel文件
+
+#### 2.2.1 文件介绍
+
+- Pandas 提供了丰富的 Excel 文件操作功能，帮助我们方便地读取和写入 .xls 和 .xlsx 文件，支持多表单、索引、列选择等复杂操作，是数据分析中必备的工具
+
+| **操作**                    | **方法**             | **说明**                                       |
+| --------------------------- | -------------------- | ---------------------------------------------- |
+| 读取 Excel 文件             | pd.read_excel()      | 读取 Excel 文件，返回 DataFrame                |
+| 将 DataFrame 写入 Excel     | DataFrame.to_excel() | 将 DataFrame 写入 Excel 文件                   |
+| 加载 Excel 文件             | pd.ExcelFile()       | 加载 Excel 文件并访问多个表单                  |
+| 使用 ExcelWriter 写多个表单 | pd.ExcelWriter()     | 写入多个 DataFrame 到同一 Excel 文件的不同表单 |
+
+
+
+#### 2.2.2 读取Excel文件
+
+- pd.read_excel()方法用于从 Excel 文件中读取数据并加载为 DataFrame。它支持读取 .xls 和 .xlsx 格式的文件。
+- **语法格式如下**
+
+~~~python
+pandas.read_excel(io, sheet_name=0, *, header=0, names=None, index_col=None, usecols=None, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skiprows=None, nrows=None, na_values=None, keep_default_na=True, na_filter=True, verbose=False, parse_dates=False, date_parser=<no_default>, date_format=None, thousands=None, decimal='.', comment=None, skipfooter=0, storage_options=None, dtype_backend=<no_default>, engine_kwargs=None)
+~~~
+
+- **参数说明：**
+  - io：这是必需的参数，指定了要读取的 Excel 文件的路径或文件对象。
+  - sheet_name=0：指定要读取的工作表名称或索引。默认为0，即第一个工作表。
+  - header=0：指定用作列名的行。默认为0，即第一行。
+  - names=None：用于指定列名的列表。如果提供，将覆盖文件中的列名。
+  - index_col=None：指定用作行索引的列。可以是列的名称或数字。
+  - usecols=None：指定要读取的列。可以是列名的列表或列索引的列表。
+  - dtype=None：指定列的数据类型。可以是字典格式，键为列名，值为数据类型。
+  - engine=None：指定解析引擎。默认为None，pandas 会自动选择。
+  - converters=None：用于转换数据的函数字典。
+  - true_values=None：指定应该被视为布尔值True的值。
+  - false_values=None：指定应该被视为布尔值False的值。
+  - skiprows=None：指定要跳过的行数或要跳过的行的列表。
+  - nrows=None：指定要读取的行数。
+  - na_values=None：指定应该被视为缺失值的值。
+  - keep_default_na=True：指定是否要将默认的缺失值（例如NaN）解析为NA。
+  - na_filter=True：指定是否要将数据转换为NA。
+  - verbose=False：指定是否要输出详细的进度信息。
+  - parse_dates=False：指定是否要解析日期。
+  - date_parser=<no_default>：用于解析日期的函数。
+  - date_format=None：指定日期的格式。
+  - thousands=None：指定千位分隔符。
+  - decimal='.'：指定小数点字符。
+  - comment=None：指定注释字符。
+  - skipfooter=0：指定要跳过的文件末尾的行数。
+  - storage_options=None：用于云存储的参数字典。
+  - dtype_backend=<no_default>：指定数据类型后端。
+  - engine_kwargs=None：传递给引擎的额外参数字典。
+
+~~~python
+import pandas as pd
+
+# 读取 data.xlsx 文件
+df = pd.read_excel('runoob_pandas_data.xlsx')
+
+# 打印读取的 DataFrame
+print(df)
+~~~
 
